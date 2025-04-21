@@ -1,0 +1,23 @@
+{
+    "instructions": {
+        "HLT":  {"opcode": "0000", "format": "0"},
+        "STO":  {"opcode": "0001", "format": "1"}, 
+        "LD":   {"opcode": "0010", "format": "1"},
+        "LDI":  {"opcode": "0011", "format": "1"},
+        "ADD":  {"opcode": "0100", "format": "1"},
+        "ADDI": {"opcode": "0101", "format": "1"},
+        "SUB":  {"opcode": "0110", "format": "1"},
+        "SUBI": {"opcode": "0111", "format": "1"},
+        "JUMP": {"opcode": "1000", "format": "1"},
+        "NOP":  {"opcode": "1001", "format": "0"},
+        "CMP":  {"opcode": "1010", "format": "1"},
+        "JNE":  {"opcode": "1011", "format": "1"},
+        "JL":   {"opcode": "1100", "format": "1"},
+        "JG":   {"opcode": "1101", "format": "1"},
+        "IN":   {"opcode": "1110", "format": "1"},
+        "OUT":  {"opcode": "1111", "format": "1"}
+    },
+    "registers": {
+        "ACC": "0001"
+    }
+}

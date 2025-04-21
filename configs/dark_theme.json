@@ -1,0 +1,12 @@
+{
+    "background": "#282C34",
+    "foreground": "#ABB2BF",
+    "line_separator": "#1e2024",
+    "line_number_bg": "#282C34",
+    "line_number_fg": "#5C6370",
+    "instruction": "#61AFEF",
+    "register": "#E06C75",
+    "label": "#C678DD",
+    "comment": "#98C379",
+    "number": "#98C379"
+}

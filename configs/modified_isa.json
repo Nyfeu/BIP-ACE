@@ -1,0 +1,5 @@
+{
+    "instructions": ["HALT", "STO", "LD", "LDI", "ADD", "ADDI", "SUB", "SUBI", "JUMP", "NOP", "CMP", "JNE", "JL", "JG", "IN", "OUT"],
+    "registers": ["ACC"]
+}
+  
