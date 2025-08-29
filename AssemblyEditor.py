@@ -21,7 +21,7 @@ class AssemblyEditor:
         self.bind_events()
 
     def configure_root(self):
-        """Configure the root window."""
+        """Configura a janela principal."""
 
         self.root.title("Assembly Editor")
         self.root.geometry("1600x1000")
@@ -30,7 +30,7 @@ class AssemblyEditor:
         self.root.bind("<Configure>", self.handle_resize)
 
     def setup_icon(self):
-        """Set the window icon."""
+        """Define o ícone da janela."""
 
         path = "assets/edit.png"
         load = Image.open(path)
@@ -38,81 +38,81 @@ class AssemblyEditor:
         self.root.iconphoto(False, render)
 
     def setup_default_configs(self):
-        """Setup default configurations."""
+        """Configurações padrão."""
 
         self.font_size = 12  # Default font size
         self.dark_mode = True  # Default theme
 
     def setup_main_frame(self):
-        """Setup the main frame."""
+        """Configura o frame principal."""
 
         self.main_frame = tk.Frame(self.root)
         self.main_frame.pack(fill=tk.BOTH, expand=True)
 
-        # Theme selection
+        # Seleção de tema
         THEME = self.dark_theme if self.dark_mode else self.light_theme
 
-        # Line Numbers
+        # Números de Linha
         self.line_numbers = tk.Text(self.main_frame, width=4, padx=15, takefocus=0, border=0, pady=15,
                                     background=THEME.get('line_number_bg'), foreground=THEME.get('line_number_fg'), state=tk.DISABLED)
         self.line_numbers.pack(side=tk.LEFT, fill=tk.Y)
 
-        # Separator (a linha vertical)
+        # Separador (uma linha vertical)
         self.separator = tk.Frame(self.main_frame, width=1, bg=THEME.get('line_separator'))
         self.separator.pack(side=tk.LEFT, fill=tk.Y)
 
-        # Text Area
-        self.text_area_frame = tk.Frame(self.main_frame)  # Create a frame for the text area and scrollbar
+        # Área de Texto
+        self.text_area_frame = tk.Frame(self.main_frame)
         self.text_area_frame.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True)
 
         self.text_area = tk.Text(self.text_area_frame, wrap="word", undo=True, font=("Courier New", 12), padx=15, pady=15, border=0,
                                 background=THEME.get('background'), foreground=THEME.get('foreground'), insertbackground=THEME.get('foreground'))
         self.text_area.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
-        # Scrollbar
+        # Barra de rolagem
         self.scrollbar = tk.Scrollbar(self.text_area_frame, command=self.text_area.yview)
         self.scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
         self.text_area.config(yscrollcommand=self.scrollbar.set)
 
-        # Sync the line numbers with the text area scroll
+        # Sincroniza os números de linha com a rolagem da área de texto
         self.text_area.config(yscrollcommand=lambda *args: self.sync_scroll(*args))
         self.line_numbers.config(yscrollcommand=lambda *args: self.sync_scroll(*args))
 
-        # Set Font 
+        # Define a fonte
         font = tkfont.Font(font=self.text_area['font']) 
         self.change_font_size(7)
         
-        # Set Tab size 
+        # Define o tamanho da tabulação
         tab_size = font.measure('   ') 
         self.text_area.config(tabs=tab_size)
 
-        # Add Syntax Highlighting Tags
+        # Adiciona tags para destaque de sintaxe
         self.syntax_highlight_theme()
-        self.highlight_syntax()           # Apply syntax highlighting
+        self.highlight_syntax()          
 
     def sync_scroll(self, *args):
-        """Sync scrolling between text area and line numbers."""
-        # Movimenta ambos os widgets juntos usando o mesmo parâmetro de scroll
+        """Sincroniza a rolagem entre a área de texto e os números de linha."""
+        # Move ambos os widgets juntos usando o mesmo parâmetro de rolagem
         self.line_numbers.yview_moveto(args[0])
         self.text_area.yview_moveto(args[0])
         self.scrollbar.set(*args)
 
     def handle_resize(self, event=None):
-        """Force scroll position maintenance on resize"""
+        """Mantém a posição de rolagem ao redimensionar."""
         self.update_line_numbers()
         self.highlight_syntax()
 
     def load_configuration_files(self):
-        """Load configuration files: color schemes and ISA."""
+        """Carrega os arquivos de configuração: esquemas de cores e ISA."""
 
         self.dark_theme = self.load_json_file("./configs/dark_theme.json")
         self.light_theme = self.load_json_file("./configs/light_theme.json")
         self.isa_config = self.load_json_file("./configs/default_isa.json")
 
-        self.load_isa()             # Load ISA instructions and registers
+        self.load_isa()             # Carrega instruções e registradores da ISA
 
     def load_json_file(self, file_path):
-        """Load a JSON file (configs)."""
+        """Carrega um arquivo JSON (configurações)."""
 
         try:
             with open(file_path, 'r') as file:
@@ -122,7 +122,7 @@ class AssemblyEditor:
             return {}
 
     def syntax_highlight_theme(self):
-        """"Apply syntax highlighting tags."""
+        """"Aplica as tags de destaque de sintaxe."""
 
         THEME = self.dark_theme if self.dark_mode else self.light_theme
 
@@ -144,12 +144,12 @@ class AssemblyEditor:
                 print(f"Failed to load ISA config: {e}")
 
     def load_isa(self):
-        """Load ISA instructions and registers."""
+        """Carrega as instruções e registradores da ISA."""
         self.instructions = self.isa_config.get("instructions", {}).keys()
         self.registers = self.isa_config.get("registers", {}).keys()
 
     def highlight_syntax(self):
-        """Apply syntax highlighting."""
+        """Aplica o destaque de sintaxe."""
         self.text_area.tag_remove("instruction", "1.0", tk.END)
         self.text_area.tag_remove("register", "1.0", tk.END)
         self.text_area.tag_remove("label", "1.0", tk.END)
@@ -176,13 +176,13 @@ class AssemblyEditor:
             self.text_area.tag_add("comment", f"1.0+{match.start()}c", f"1.0+{match.end()}c")
 
     def bind_events(self):
-        """Bind events to the text area"""
+        """Associa eventos à área de texto."""
 
         self.text_area.bind("<KeyRelease>", self.on_key_release)
         self.text_area.bind("<MouseWheel>", self.on_scroll)
         self.text_area.bind("<Control-MouseWheel>", self.zoom_text)
         self.text_area.bind("<Control-plus>", lambda e: self.change_font_size(1))
-        self.text_area.bind("<Control-equal>", lambda e: self.change_font_size(1))  # For some keyboards
+        self.text_area.bind("<Control-equal>", lambda e: self.change_font_size(1))
         self.text_area.bind("<Control-minus>", lambda e: self.change_font_size(-1))
         self.text_area.bind("<Control-s>", lambda e: self.save_file())
         self.text_area.bind("<Control-o>", lambda e: self.open_file())
@@ -194,18 +194,18 @@ class AssemblyEditor:
         self.text_area.bind("<<Modified>>", self.on_text_modified)
 
     def on_text_modified(self, event):
-        """Handle text modification events."""
+        """Lida com eventos de modificação de texto."""
         if self.text_area.edit_modified():
             self.update_line_numbers()
             self.highlight_syntax()
-            self.text_area.edit_modified(False)  # Reseta o flag
+            self.text_area.edit_modified(False)
 
     def on_key_release(self, event):
-        """Update syntax highlighting and line numbers."""
+        """Atualiza o destaque de sintaxe e os números de linha."""
         self.highlight_syntax()
 
     def update_line_numbers(self, event=None):
-        """Update the line numbers panel."""
+        """Atualiza o painel de números de linha."""
         # Salva a posição atual do scroll
         current_scroll = self.text_area.yview()[0]
 
@@ -226,24 +226,24 @@ class AssemblyEditor:
         self.line_numbers.yview_moveto(current_scroll)
 
     def on_scroll(self, event):
-        """Synchronize line numbers with text scrolling."""
+        """Sincroniza os números de linha com a rolagem do texto."""
         self.line_numbers.yview_moveto(self.text_area.yview()[0])
 
     def zoom_text(self, event):
-        """ Zooms in and out using Ctrl + Mouse Scroll """
+        """Aumenta e diminui o zoom usando Ctrl + Scroll do Mouse."""
         if event.delta > 0:
             self.change_font_size(1)
         else:
             self.change_font_size(-1)
 
     def change_font_size(self, delta):
-        """ Changes the font size """
+        """Altera o tamanho da fonte."""
         self.font_size = max(8, min(self.font_size + delta, 32))
         self.text_area.config(font=("Courier", self.font_size))
         self.line_numbers.config(font=("Courier", self.font_size))
 
     def create_menu(self):
-        """Creates the menu bar """
+        """Cria a barra de menu."""
         menu_bar = Menu(self.root)
 
         file_menu = Menu(menu_bar, tearoff=0)
@@ -268,7 +268,7 @@ class AssemblyEditor:
         self.root.config(menu=menu_bar)
 
     def show_about_info(self):
-        """Displays information about the software."""
+        """Exibe informações sobre o software."""
 
         about_message = (
             "BIP-ACE (Assembly Coding Environment)   \n\n"
@@ -286,7 +286,7 @@ class AssemblyEditor:
         messagebox.showinfo("Sobre", about_message, icon=None)
 
     def update_theme(self):
-        """ Applies the selected theme """
+        """Aplica o tema selecionado."""
 
         self.syntax_highlight_theme()
 
@@ -303,7 +303,7 @@ class AssemblyEditor:
         self.change_font_size(-1)
 
     def toggle_theme(self):
-        """ Applies the selected theme """
+        """Alterna entre os temas claro e escuro."""
         self.dark_mode = not self.dark_mode
         self.update_theme()
 
@@ -325,5 +325,5 @@ class AssemblyEditor:
                 file.write(self.text_area.get("1.0", tk.END))
 
     def assemble_code(self):
-        """This method calls the assembler and displays the machine code."""
+        """Este método chama o Assembler e exibe o código de máquina."""
         Assembler(self.root, self.text_area, self.isa_config, self.dark_theme)

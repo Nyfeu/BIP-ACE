@@ -27,7 +27,7 @@ class SerialGUI:
         serial_window.configure(bg='#f0f0f0')
         self.data_pairs = data_pairs
 
-        # Block interaction with the main window
+        # Bloqueia a interação com a janela principal
         serial_window.grab_set()
 
         ttk.Label(serial_window, text="Porta COM:").pack(pady=5)
@@ -49,9 +49,9 @@ class SerialGUI:
         self.progress = ttk.Progressbar(serial_window, orient="horizontal", length=200, mode='determinate')
         self.progress.pack(pady=10)
 
-        # Ensure the window stays on top
+        # Garante que a janela fique no topo
         serial_window.grab_set()
-        serial_window.wait_window()  # Wait until the serial window is closed
+        serial_window.wait_window() 
 
 
     def send_data(self):

@@ -61,6 +61,7 @@ Desenvolvido para ensino de Arquitetura e Organização de Computadores
 
 - Placa: Digilent Nexys 4 (Artix-7 XC7A100T)
 - A arquitetura foi validada via GHDL no repositório [BIP-I](https://github.com/Nyfeu/BIP-I)
+- **Documentação:** Um manual detalhado sobre o software e sua arquitetura está disponível em [BIP_ACE.pdf](BIP_ACE.pdf).
 
 ## 📦 Instalação
 
